@@ -1,4 +1,4 @@
-import { gql, UserInputError } from 'apollo-server'
+import { AuthenticationError, gql, UserInputError } from 'apollo-server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from './models/user.js'
@@ -24,7 +24,7 @@ export const typeDefs = gql`
     }
 
     type Mutation {
-        createUser(username: String!, password: String!): Token
+        register(username: String!, password: String!): Token
         login(username: String!, password: String!): Token
     }
 `
@@ -32,17 +32,19 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         me: (_, args, { currentUser }) => {
+            if (!currentUser) throw new AuthenticationError('Not authenticated')
+
             return currentUser
         }
     },
     Mutation: {
-        createUser: async (_, args) => {
-            const { username, password } = args
+        register: async (_, args) => {
+            const { username, password } = args            
 
             try {
                 let user = await User.findOne({ username })
 
-                if (user) throw new Error('User already exists')
+                if (user) throw new UserInputError('Username already exists')
 
                 // Create the new user
                 user = new User({ username, password })
