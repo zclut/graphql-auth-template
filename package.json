@@ -1,0 +1,23 @@
+{
+  "name": "chat-graphql",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GraphQL Server to chat app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "Juan Daniel Padilla zClut",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.8.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "dotenv": "^16.0.1"
+  }
+}
